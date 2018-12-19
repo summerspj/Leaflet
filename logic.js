@@ -27,6 +27,7 @@ var layers = {
 var map = L.map("map", {
   center: [6.4238, -10.5897],
   zoom: 2.1,
+  minZoom: 2.1,
   layers: [
     streetmap,
     layers.Quakes,
@@ -48,19 +49,6 @@ var overlays = {
 
 // Create a control for our layers, add our overlay layers to it
 L.control.layers(baseMaps, overlays).addTo(map);
-
-// // Create a legend to display information about our map
-// var info = L.control({
-//   position: "bottomright"
-// });
-
-// // When the layer control is added, insert a div with the class of "legend"
-// info.onAdd = function() {
-//   var div = L.DomUtil.create("div", "legend");
-//   return div;
-// };
-// // Add the info legend to the map
-// info.addTo(map);
 
 // Create API endpoint
 var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
@@ -87,6 +75,10 @@ legend.onAdd = function(map)
     mags = [0, 1, 2, 3, 4, 5],
     labels = []
 
+    div.innerHTML += '<b>Earthquake</b><br>'
+    div.innerHTML += '<b>Magnitude</b><br>' 
+    div.innerHTML += '<b>This Week</b><br>' 
+
     // loop through our density intervals and generate a label with a colored 
     //square for each interval
     for (var i = 0; i < mags.length; i++) {
@@ -98,7 +90,7 @@ legend.onAdd = function(map)
 };
 legend.addTo(map);
 
-// Perform a GET request to the query URL
+// Perform a GET request to the query URL for Earthquake data
 d3.json(url, function (data) 
 {
   var quakes = data.features
@@ -128,7 +120,7 @@ d3.json(url, function (data)
     }
   });
 
-  // d3.json("countries.geo.json", function(data) { countries = data.features; countriesOverlay.addTo(map) });
+  // get Fault data and add to Fault layer
   d3.json(platesLink, function(data)
   {
     var faultFeatures = data.features
@@ -137,7 +129,6 @@ d3.json(url, function (data)
         "fillOpacity": 0
     }
 
-    console.log(faultFeatures)
     var faults = L.geoJSON(faultFeatures, 
       {
         style: function(feature){
@@ -147,8 +138,3 @@ d3.json(url, function (data)
   })
 
 })
-
-
-
-
-
