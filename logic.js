@@ -19,8 +19,8 @@ var darkmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?
 var layers = {
     Street: new L.LayerGroup(),
     Dark: new L.LayerGroup(),
-    Quakes: new L.LayerGroup(),
-    Faults: new L.LayerGroup()
+    Quakes: new L.LayerGroup()
+    // Faults: new L.LayerGroup()
   };
 
 // Create the map with our layers
@@ -30,8 +30,8 @@ var myMap = L.map("map", {
     minZoom: 2.1,
     layers: [
         streetmap,
-        layers.Quakes,
-        layers.Faults
+        layers.Quakes
+        // layers.Faults
         ]
     });
 
@@ -43,8 +43,8 @@ var baseMaps = {
 
 //Create an overlays object to add to the layer control
 var overlays = {
-  "Earthquakes": layers.Quakes,
-  "Faults": layers.Faults
+  "Earthquakes": layers.Quakes
+  // "Faults": layers.Faults
 };
 
 var legend = L.control({position: 'bottomright'});
