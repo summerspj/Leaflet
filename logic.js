@@ -15,10 +15,19 @@ var darkmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?
   accessToken: API_KEY
 });
 
+var outdoors = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", 
+{
+  attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+  maxZoom: 18,
+  id: "mapbox.outdoors",
+  accessToken: API_KEY
+});
+
 // Initialize all of the LayerGroups we'll be using
 var layers = {
     Street: new L.LayerGroup(),
     Dark: new L.LayerGroup(),
+    Outdoors:  new L.LayerGroup(),
     Quakes: new L.LayerGroup()
     // Faults: new L.LayerGroup()
   };
@@ -29,7 +38,7 @@ var myMap = L.map("map", {
     zoom: 2.1,
     minZoom: 2.1,
     layers: [
-        streetmap,
+        outdoors,
         layers.Quakes
         // layers.Faults
         ]
@@ -38,7 +47,8 @@ var myMap = L.map("map", {
 // Add base tile layer to the map
 var baseMaps = {
   "Street Map": streetmap,
-  "Satellite Map": darkmap
+  "Satellite Map": darkmap,
+  "Outdoors Map": outdoors
 };
 
 //Create an overlays object to add to the layer control
