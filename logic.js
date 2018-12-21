@@ -40,7 +40,7 @@ var myMap = L.map("map", {
     minZoom: 2.1,
     layers: [
         outdoors,
-        // layers.Faults,
+        layers.Faults,
         layers.Quakes
         ]
     });
@@ -54,7 +54,7 @@ var baseMaps = {
 
 //Create an overlays object to add to the layer control
 var overlays = {
-  // "Faults": layers.Faults,
+  "Faults": layers.Faults,
   "Earthquakes": layers.Quakes
 };
 
@@ -117,29 +117,35 @@ d3.json(url, function (data)
         "<h3>" + feature.properties.place +
         "</h3><hr><p>" + new Date(feature.properties.time) + "</p>" + 
         "</h3><hr><p>" + "Magnitude:  " + (feature.properties.mag) + "</p>"
-      )
+      ),
+      layer.on({
+      'add': function(){
+        layer.bringToFront()
+        }
+      })
     }
-
   }).addTo(layers.Quakes);
 });
-// get Fault data and add to Fault layer
-  d3.json(platesLink, function(data)
-  {
-    var faultFeatures = data.features
-    var styling = 
-    {
-        "fillOpacity": 0
-    }
 
-    var faults = L.geoJSON(faultFeatures, 
+// get Fault data and add to Fault layer
+d3.json(platesLink, function(data)
+{
+  var faultFeatures = data.features
+  var styling = 
+  {
+      "fillOpacity": 0
+  }
+
+  var faults = L.geoJSON(faultFeatures, 
+    {
+      style: function(feature)
       {
-        style: function(feature)
-        {
-            return styling
-        }
-      }).addTo(myMap)
-    //   createMap(earthquakes, faults)  
-  }).addTo(layers.Faults)
+          return styling
+      }
+    }).addTo(layers.Faults)
+  //   createMap(earthquakes, faults)  
+})
+
 
 // define function for get color
 function getColor(d) 
